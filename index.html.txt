@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consolidador - Laboratorio</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; padding: 0; background-color: #f4f4f9; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        h1, h2 { color: #333; }
+        label { display: block; margin-top: 10px; font-weight: bold; }
+        input, select { width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box; }
+        .result { margin-top: 15px; padding: 10px; background: #e8f5e9; border-left: 5px solid #4caf50; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <h1>Consolidador de Suelos</h1>
+
+    <!-- CALCULADORA -->
+    <div class="card">
+        <h2>Calculadora de Carga</h2>
+        <label for="area">Sección del Anillo (cm²):</label>
+        <input type="number" id="area" value="31.40" step="0.01">
+
+        <label for="presion">Presión deseada (kg/cm²):</label>
+        <input type="number" id="presion" value="0.05" step="0.001">
+
+        <button onclick="calcular()" style="margin-top:15px; width:100%; padding:10px; background:#007bff; color:white; border:none; border-radius:4px; font-size:16px;">Calcular Peso</button>
+
+        <div class="result" id="resultado">
+            Carga en plato: 123.9 g
+        </div>
+    </div>
+
+    <!-- INSTRUCTIVO -->
+    <div class="card">
+        <h2>Instrucciones de Uso</h2>
+        <ol>
+            <li>Verificar que el brazo de palanca esté nivelado y equilibrado antes de colocar la muestra.</li>
+            <li>Colocar la celda de consolidación centrada bajo el punto de compresión.</li>
+            <li>Ajustar el deformatímetro (dial) a cero.</li>
+            <li>Aplicar la carga calculada en el plato suspendido.</li>
+        </ol>
+    </div>
+
+    <script>
+        function calcular() {
+            let A = parseFloat(document.getElementById('area').value);
+            let P = parseFloat(document.getElementById('presion').value);
+            let R = 76.0 / 6.0; // Relación de palanca exacta (12.6667)
+            
+            if (A > 0 && P > 0) {
+                let fuerza = P * A;
+                let cargaKg = fuerza / R;
+                let cargaGramo = cargaKg * 1000;
+                
+                document.getElementById('resultado').innerHTML = 
+                    `Fuerza sobre muestra: ${fuerza.toFixed(2)} kg<br>` +
+                    `Carga en plato: <b>${cargaKg.toFixed(3)} kg (${cargaGramo.toFixed(1)} g)</b>`;
+            } else {
+                document.getElementById('resultado').innerHTML = "Por favor ingrese valores válidos.";
+            }
+        }
+    </script>
+</body>
+</html>
